@@ -5,7 +5,7 @@ import()
 type RestOk interface {
 	MetaHead() metaHead
 	Data()     interface{}
-  Total()    *int
+  Total()    []int
 }
 
 type metaHead struct {
@@ -18,7 +18,7 @@ type metaHead struct {
 type restOk struct {
 	RestMetaHead metaHead     `json:"meta"`
 	RestData     interface{}  `json:"data"`
-  RestTotal    *int         `json:"total,omitempty"`
+  RestTotal    []int       `json:"total,omitempty"`
 }
 
 func (r restOk) MetaHead() metaHead {
@@ -29,11 +29,11 @@ func (r restOk) Data() interface{} {
 	return r.RestData
 }
 
-func (r restOk) Total() *int {
+func (r restOk) Total() []int {
 	return r.RestTotal
 }
 
-func NewRestOK(message string, status int, err bool, reason string, payload interface{}, total int) (RestOk) {
+func NewRestOK(message string, status int, err bool, reason string, payload interface{}, total ...int) (RestOk) {
   mh := metaHead{ Message: message,
 							     Status: status,
 							     Error: err,
@@ -41,5 +41,5 @@ func NewRestOK(message string, status int, err bool, reason string, payload inte
 
   return restOk{ RestMetaHead: mh,
 								 RestData:  payload,
-							   RestTotal: &total }
+							   RestTotal: total }
 }
